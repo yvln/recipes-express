@@ -25,9 +25,10 @@ Recipes.findOne = (req, res, next) => {
 
 Recipes.search = (req, res, next) => {
     const { ingredients } = req.body;
-    axios.get(`http://food2fork.com/api/search?key=${API_KEY}&q=${ingredients}`)
+    const ingredientString = ingredients.join(',').toLowerCase();
+    axios.get(`http://food2fork.com/api/search?key=${process.env.API_KEY}&q=${ingredientString}`)
         .then( recipesResults => {
-            res.locals.recipesResults = recipesResults;
+            res.locals.recipesResults = recipesResults.data.recipes;
             next();
         }).catch( err => {
             console.log(`ERROR MODEL search: ${err}`)
@@ -35,7 +36,8 @@ Recipes.search = (req, res, next) => {
 },
 
 Recipes.saveIntoDb = (req, res, next) => {
-    const { title, ingredients, picture, publisher, source_url, social_rank, image_url } = req.body;
+    const { favourite } = req.body;
+    const { title, ingredients, picture, publisher, source_url, social_rank, image_url } = favourite;
     db.one(`INSERT INTO recipes (title, ingredients, picture, publisher, source_url, social_rank, image_url)
             VALUES ($1, $2, $3, $4, $5, $6, $7) returning *`,
             [title, ingredients, picture, publisher, source_url, social_rank, image_url])

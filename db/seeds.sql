@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS recipes;
 CREATE TABLE recipes (
   id BIGSERIAL PRIMARY KEY,
   title VARCHAR NOT NULL,
-  ingredients VARCHAR,
+  recipe_id VARCHAR,
   picture VARCHAR,
   publisher VARCHAR,
   source_url VARCHAR,

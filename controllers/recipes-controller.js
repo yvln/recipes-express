@@ -7,14 +7,14 @@ Router.get('/',
         const { recipes } = res.locals
         res.json(recipes);
     });
-    
+
 Router.get('/:recipeId',
     Recipes.findOne,
     (req, res) => {
         const { recipe } = res.locals
         res.json(recipe);
     });
-        
+
 Router.post('/search',
     Recipes.search,
     (req, res) => {
@@ -29,17 +29,18 @@ Router.post('/saveIntoDb',
         res.json(savedRecipe);
     });
 
-Router.post('/update/:recipeId',
+Router.post('/update',
     Recipes.update,
     (req, res) => {
         const { editedRecipesData } = res.locals
-        res.json({ editedRecipesData: editedRecipesData });
+        res.json(editedRecipesData);
     });
 
-Router.delete('/delete/:recipeId',
+Router.post('/delete',
     Recipes.destroy,
     (req, res) => {
-        res.send('Recipe deleted from the database');
+      const { deletedFavourite } = res.locals;
+      res.json(deletedFavourite);
     });
 
 module.exports = Router;

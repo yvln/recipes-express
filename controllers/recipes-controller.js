@@ -7,9 +7,9 @@ Router.get('/',
         const { recipes } = res.locals
         res.json(recipes);
     });
-
-Router.get('/:recipeId',
-    Recipes.findOne,
+    
+Router.get('/getIngredients/:recipeId',
+    Recipes.getIngredients,
     (req, res) => {
         const { recipe } = res.locals
         res.json(recipe);

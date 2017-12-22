@@ -13,12 +13,11 @@ Recipes.findAll = (req, res, next) => {
         })
 },
 
-Recipes.findOne = (req, res, next) => {
+Recipes.getIngredients = (req, res, next) => {
     const { recipeId } = req.params;
-    db.one(`SELECT * FROM recipes WHERE recipe_id = $1`, [recipeId])
+    axios.get(`http://food2fork.com/api/get?key=${process.env.API_KEY}&rId=${recipeId}`)
         .then( recipe => {
-            // console.log(`SUCCESS MODEL findOne, ${recipe}`);
-            res.locals.recipe = recipe;
+            res.locals.recipe = recipe.data.recipe.ingredients;
             next();
         }).catch( err => {
             console.log(`ERROR MODEL findOne: ${err}`)
@@ -55,9 +54,9 @@ Recipes.saveIntoDb = (req, res, next) => {
 
 Recipes.destroy = (req, res, next) => {
     const deleted_favourite = req.body.deleted_favourite;
-    db.one('DELETE FROM recipes WHERE id = $1 RETURNING id', [deleted_favourite])
+    db.one('DELETE FROM recipes WHERE recipe_id = $1 RETURNING *', [deleted_favourite])
         .then( deletedFavourite => {
-            console.log(`SUCCESS MODEL destroy`);
+            // console.log(`SUCCESS MODEL destroy`);
             res.locals.deletedFavourite = deletedFavourite;
             next();
         }).catch( err => {

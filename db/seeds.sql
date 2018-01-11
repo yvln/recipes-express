@@ -9,5 +9,5 @@ CREATE TABLE recipes (
   source_url VARCHAR,
   social_rank VARCHAR,
   image_url VARCHAR,
-  ingredients  VARCHAR,
+  ingredients  VARCHAR
 );
